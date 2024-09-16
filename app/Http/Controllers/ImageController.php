@@ -3,22 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class UploadController extends Controller
+class ImageController extends Controller
 {
-    public function store(Request $request)
+    public function submit(Request $request)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imageName = time().'.'.$request->image->extension();  
-        $request->image->move(public_path('images'), $imageName);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            
+            $path = Storage::disk('supabase')->putFileAs('uploads', $image, $filename);
+            $publicUrl = 'https://qpbjgvsfqfnqbrctahst.supabase.co/storage/v1/object/user_gallery/' . $path;
 
-        /* Simpan $imageName ke database atau lakukan tindakan lain */
+            return redirect()->back()->with('imageUrl', $publicUrl);
+        }
 
-        return back()
-            ->with('success','You have successfully uploaded an image.')
-            ->with('image',$imageName);
+        return redirect()->back()->with('error', 'No image uploaded.');
     }
 }
