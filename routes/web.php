@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UploadController;
+use App\Http\Controllers\ImageController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    } else {
+        return redirect()->route('register');
+    }
 });
 
 Route::get('/dashboard', function () {
@@ -18,12 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Fahmi
 Route::get('/upload', function () {
     return view('upload');
 })->middleware(['auth', 'verified'])->name('upload');
 
-Route::post('/upload/submit', [UploadController::class, 'store'])->name('upload.submit');
-// Fahmi 
+Route::post('/upload/submit', [ImageController::class, 'submit'])->name('upload.submit');
 
 require __DIR__.'/auth.php';
