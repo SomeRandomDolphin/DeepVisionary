@@ -15,10 +15,10 @@ class ImageController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            
+            $filename = time().'.'.$image->getClientOriginalExtension();
+
             $path = Storage::disk('supabase')->putFileAs('uploads', $image, $filename);
-            $publicUrl = 'https://qpbjgvsfqfnqbrctahst.supabase.co/storage/v1/object/user_gallery/' . $path;
+            $publicUrl = 'https://qpbjgvsfqfnqbrctahst.supabase.co/storage/v1/object/user_gallery/'.$path;
 
             return redirect()->back()->with('imageUrl', $publicUrl);
         }
