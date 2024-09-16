@@ -19,7 +19,8 @@
                         <div class="container">
                             <div class="row">
                                 @php
-                                    $listContent = Storage::disk('supabase')->getAdapter()->listContents('', true);
+                                    $userId = Auth::user()->id;
+                                    $listContent = Storage::disk('supabase')->getAdapter()->listContents('uploads/' . $userId, true);
                                     $files = iterator_to_array($listContent);
                                 @endphp
 
