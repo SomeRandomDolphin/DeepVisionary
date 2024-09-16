@@ -1,16 +1,20 @@
 {
     "version": 2,
-      "framework": null,
+    "framework": "laravel",
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.6.0" }
+        "api/*.php": {
+            "runtime": "vercel-php@0.6.0"
+        }
     },
-    "routes": [{
-        "src": "/(.*)",
-        "dest": "/api/index.php"
-    }],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "APP_URL": "https://yourprojectdomain.com",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
@@ -22,6 +26,14 @@
 
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie"
+        "SESSION_DRIVER": "cookie",
+        
+        "FILESYSTEM_DRIVER": "local",
+        "QUEUE_CONNECTION": "sync"
+    },
+    "build": {
+        "env": {
+            "PHP_EXTENSIONS": "pdo_mysql,openssl,mbstring,bcmath,exif,gd"
+        }
     }
 }

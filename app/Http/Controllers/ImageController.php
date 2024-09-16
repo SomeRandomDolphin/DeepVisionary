@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -19,7 +19,7 @@ class ImageController extends Controller
             $image = $request->file('image');
             $filename = time().'.'.$image->getClientOriginalExtension();
 
-            $path = Storage::disk('supabase')->putFileAs('uploads/' . $userId, $image, $filename);
+            $path = Storage::disk('supabase')->putFileAs('uploads/'.$userId, $image, $filename);
             $publicUrl = 'https://qpbjgvsfqfnqbrctahst.supabase.co/storage/v1/object/user_gallery/'.$path;
 
             return redirect()->back()->with('imageUrl', $publicUrl);
