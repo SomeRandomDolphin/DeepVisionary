@@ -4,6 +4,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CatalogController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -32,5 +33,7 @@ Route::get('/upload', function () {
 })->middleware(['auth', 'verified'])->name('upload');
 
 Route::post('/upload/submit', [ImageController::class, 'submit'])->name('upload.submit');
+
+Route::get('/catalog/{file}', [CatalogController::class, 'show'])->name('catalog.show')->middleware('auth');
 
 require __DIR__.'/auth.php';

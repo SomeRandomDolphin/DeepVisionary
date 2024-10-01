@@ -28,6 +28,7 @@
                                     @if($file instanceof \League\Flysystem\FileAttributes && in_array(strtolower(pathinfo($file->path(), PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']))
                                         <div class="col-md-4">
                                             <div class="card mb-4 shadow-sm">
+                                                <a href="{{ route('catalog.show', ['file' => basename($file->path())]) }}">
                                                 <img src="{{ Storage::disk('supabase')->url($file->path()) }}" class="bd-placeholder-img card-img-top" width="100%" height="225" alt="{{ basename($file->path()) }}">
                                                 <div class="card-body">
                                                     <p class="card-text">{{ basename($file->path()) }}</p>
