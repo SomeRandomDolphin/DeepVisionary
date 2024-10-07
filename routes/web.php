@@ -1,17 +1,24 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UploadController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CatalogController;
 
->>>>>>> Stashed changes
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    } else {
+        return redirect()->route('register');
+    }
+});
+
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
@@ -27,17 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-<<<<<<< Updated upstream
-// Fahmi
-Route::get('/upload', function () {
-    return view('upload');
-})->middleware(['auth', 'verified'])->name('upload');
-
-Route::post('/upload/submit', [UploadController::class, 'store'])->name('upload.submit');
-// Fahmi 
-
-require __DIR__.'/auth.php';
-=======
 // Removed the conflicting /upload route
 // Added middleware to the controller-based routes
 Route::get('/upload', [ProductController::class, 'create'])
@@ -66,4 +62,3 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middl
 
 
 require __DIR__.'/auth.php';
->>>>>>> Stashed changes

@@ -1,25 +1,10 @@
 <x-app-layout>
-<<<<<<< Updated upstream
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Upload Image') }}  
-        </h2>
-    </x-slot>
-    
-    <div class="container py-5">
-
-        <header class="text-white text-center">
-            <h1 class="display-4">Upload Image</h1>
-            <p class="lead mb-0">Click the button below to upload your image here.</p>
-            <img src="https://bootstrapious.com/i/snippets/sn-img-upload/image.svg" alt="" width="150" class="mb-4">
-=======
 
     <div class="container py-5">
 
         <header class="text-white text-center">
             <h1 class="display-4">Upload New Product</h1>
             <p class="lead mb-0">Fill out the form below to upload your product.</p>
->>>>>>> Stashed changes
         </header>
 
         <div class="row py-4">
@@ -70,12 +55,6 @@
 
                     <!-- Submit button -->
                     <div class="text-center mt-4">
-<<<<<<< Updated upstream
-                        <button type="submit" class="btn btn-primary px-4">Submit</button>
-                    </div>
-                </form>
-
-=======
                         <button type="submit" class="btn btn-primary px-4">Upload Product</button>
                     </div>
                 </form>
@@ -85,7 +64,6 @@
                         <p class="text-white">Product Uploaded!</p>
                     </div>
                 @endif
->>>>>>> Stashed changes
             </div>
         </div>
     </div>
