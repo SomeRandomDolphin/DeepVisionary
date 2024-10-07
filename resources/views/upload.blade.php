@@ -1,4 +1,5 @@
 <x-app-layout>
+<<<<<<< Updated upstream
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Upload Image') }}  
@@ -11,24 +12,53 @@
             <h1 class="display-4">Upload Image</h1>
             <p class="lead mb-0">Click the button below to upload your image here.</p>
             <img src="https://bootstrapious.com/i/snippets/sn-img-upload/image.svg" alt="" width="150" class="mb-4">
+=======
+
+    <div class="container py-5">
+
+        <header class="text-white text-center">
+            <h1 class="display-4">Upload New Product</h1>
+            <p class="lead mb-0">Fill out the form below to upload your product.</p>
+>>>>>>> Stashed changes
         </header>
 
         <div class="row py-4">
             <div class="col-lg-6 mx-auto">
 
-                <!-- Form for image upload -->
-                <form method="POST" action="{{ route('upload.submit') }}" enctype="multipart/form-data">
+                <!-- Form for product upload -->
+                <form method="POST" action="{{ route('product.upload') }}" enctype="multipart/form-data">
                     @csrf <!-- CSRF protection -->
 
+                    <!-- Title input -->
+                    <div class="form-group">
+                        <label class="text-white" for="title">Product Title</label>
+                        <input id="title" type="text" name="title" class="form-control" required>
+                    </div>
+
+                    <!-- Description input -->
+                    <div class="form-group">
+                        <label class="text-white" for="description">Product Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+                    </div>
+
+                    <!-- Price input -->
+                    <div class="form-group">
+                        <label class="text-white" for="price">Price</label>
+                        <input id="price" type="number" name="price" class="form-control" required>
+                    </div>
+
                     <!-- Upload image input -->
-                    <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
-                        <input id="upload" type="file" name="image" onchange="readURL(this);" class="form-control border-0">
-                        <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
-                        <div class="input-group-append">
-                            <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> 
-                                <i class="fa fa-cloud-upload mr-2 text-muted"></i>
-                                <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
-                            </label>
+                    <div class="form-group">
+                        <label class="text-white" for="image">Product Image</label>
+                        <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                            <input id="upload" type="file" name="image" onchange="readURL(this);" class="form-control border-0" required>
+                            <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
+                            <div class="input-group-append">
+                                <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> 
+                                    <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+                                    <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -40,17 +70,28 @@
 
                     <!-- Submit button -->
                     <div class="text-center mt-4">
+<<<<<<< Updated upstream
                         <button type="submit" class="btn btn-primary px-4">Submit</button>
                     </div>
                 </form>
 
+=======
+                        <button type="submit" class="btn btn-primary px-4">Upload Product</button>
+                    </div>
+                </form>
+
+                @if(session('productUploaded'))
+                    <div class="mt-4 text-center">
+                        <p class="text-white">Product Uploaded!</p>
+                    </div>
+                @endif
+>>>>>>> Stashed changes
             </div>
         </div>
     </div>
 
     <!-- Load CSS and JS resources -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         #upload {
             opacity: 0;
@@ -94,8 +135,8 @@
         }
     </style>
 
+    <!-- JavaScript resources -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
