@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 
 Route::get('/', function () {
@@ -59,5 +60,6 @@ Route::post('/upload/submit', [ImageController::class, 'submit'])->name('upload.
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add')->middleware('auth');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
 
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
 require __DIR__.'/auth.php';
