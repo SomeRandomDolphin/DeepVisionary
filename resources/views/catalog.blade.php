@@ -5,11 +5,17 @@
     <div class="container py-5">
         <!-- Success Message -->
         @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show text-white" role="alert">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <!-- Close button -->
+            </div>
+        @endif
+
+        <!-- Error Message -->
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <!-- Close button -->
             </div>
         @endif
 
@@ -22,7 +28,8 @@
             <!-- Product Details -->
             <div class="col-md-6">
                 <h1 class="text-white mb-3">{{ $product->title }}</h1>
-                <p class="text-white lead mb-3">Rp{{ number_format($product->price, 2) }}</p>
+                <p class="text-white lead mb-3">Rp{{ number_format($product->price, 0) }}</p>
+                <p class="text-white mb-3">Stock: {{ $product->stock }}</p>
                 <p class="text-white mb-4">{{ $product->description }}</p>
 
                 <!-- Add to Cart Button -->

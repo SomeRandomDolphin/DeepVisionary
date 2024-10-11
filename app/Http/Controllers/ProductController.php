@@ -27,6 +27,7 @@ class ProductController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'price'       => 'required|numeric',
+            'stock'       => 'required|integer|min:0',
             'image'       => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -42,6 +43,7 @@ class ProductController extends Controller
         $product->title       = $request->title;
         $product->description = $request->description;
         $product->price       = $request->price;
+        $product->stock       = $request->stock;
         $product->image_path  = $path;
         $product->save();
 

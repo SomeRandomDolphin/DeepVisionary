@@ -32,6 +32,12 @@
                         <input id="price" type="number" name="price" class="form-control" required>
                     </div>
 
+                    <!-- Stock Input -->
+                    <div class="mb-4">
+                        <label for="stock" class=" text-white">Stock</label>
+                        <input id="stock" type="number" name="stock" min="0" class="form-control" required>
+                    </div>
+
                     <!-- Upload image input -->
                     <div class="form-group">
                         <label class="text-white" for="image">Product Image</label>

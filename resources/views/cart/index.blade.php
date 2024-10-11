@@ -1,38 +1,75 @@
 <x-app-layout>
-    <div class="container py-5">
-        <h1>Your Cart</h1>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Your Cart') }}
+        </h2>
+    </x-slot>
 
-        @if(count($cart) > 0)
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Title</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $total = 0; @endphp
-                    @foreach($cart as $id => $item)
-                        @php $subtotal = $item['price'] * $item['quantity']; @endphp
-                        <tr>
-                            <td>
-                                <img src="{{ Storage::disk('supabase')->url($item['image']) }}" alt="{{ $item['title'] }}" width="50">
-                            </td>
-                            <td>{{ $item['title'] }}</td>
-                            <td>{{ $item['quantity'] }}</td>
-                            <td>${{ number_format($item['price'], 2) }}</td>
-                            <td>${{ number_format($subtotal, 2) }}</td>
-                        </tr>
-                        @php $total += $subtotal; @endphp
-                    @endforeach
-                </tbody>
-            </table>
-            <h3>Total: ${{ number_format($total, 2) }}</h3>
-        @else
-            <p>Your cart is empty.</p>
-        @endif
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous" />
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card shadow-sm">
+                    <div class="card-header text-white bg-dark">
+                        <h4 class="mb-0">Your Cart</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($cart as $id => $item)
+                                    <tr>
+                                        <td class="align-middle  ">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ Storage::disk('supabase')->url($item['image']) }}" alt="{{ $item['title'] }}" width="50" class="img-thumbnail mr-3">
+                                                <div>{{ $item['title'] }}</div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">Rp{{ number_format($item['price'], 0) }}</td>
+                                        <td class="align-middle">
+                                            <!-- Update Quantity Form -->
+                                            <form action="{{ route('cart.update', ['id' => $id]) }}" method="POST" class="form-inline">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="input-group">
+                                                    <input type="number" name="quantity" class="form-control form-control-sm" value="{{ $item['quantity'] }}" min="1" max="{{ $productStocks[$id] ?? 0 }}">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="align-middle">Rp{{ number_format($item['price'] * $item['quantity'], 0) }}</td>
+                                        <td class="align-middle">
+                                            <!-- Remove Item Form -->
+                                            <form action="{{ route('cart.remove', ['id' => $id]) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Button at the bottom to continue to checkout -->
+        <div class="row mt-4">
+            <div class="col-md-8 offset-md-2">
+                <a href="{{ route('checkout') }}" class="btn btn-primary btn-lg btn-block">Continue to Checkout</a>
+            </div>
+        </div>
     </div>
 </x-app-layout>

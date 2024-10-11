@@ -57,7 +57,8 @@
                                                 alt="{{ $product->title }}">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $product->title }}</h5>
-                                                <p class="card-text">${{ number_format($product->price, 2) }}</p>
+                                                <p class="card-text">Rp{{ number_format($product->price, 0) }}</p>
+                                                <p class="card-text">Stock: {{ $product->stock }}</p> 
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div class="btn-group">
                                                         <a href="{{ route('catalog.show', ['id' => $product->id]) }}"
