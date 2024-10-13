@@ -24,9 +24,13 @@ Route::get('/welcome', function () {
 
 // Removed the conflicting /dashboard route
 // Added middleware to the controller-based route
-Route::get('/dashboard', [ProductController::class, 'index'])
+Route::get('/dashboard', [ProductController::class, 'seller'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::get('/alldashboard', [ProductController::class, 'buyer'])
+    ->middleware(['auth', 'verified'])
+    ->name('alldashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

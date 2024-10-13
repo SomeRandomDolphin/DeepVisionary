@@ -74,10 +74,7 @@
                 <main role="main">
                     <section class="jumbotron text-center">
                         <div class="container">
-                            <h1>{{ Auth::user()->name }}'s Products</h1>
-                            <p>
-                                <a href="{{ route('product.create') }}" class="btn btn-primary my-2">Upload New Product</a>
-                            </p>
+                            <h1>All Products</h1>
                             <div class="row">
                                 <div class="col-md-6">
                                     <form class="form-inline">

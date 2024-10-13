@@ -51,12 +51,21 @@ class ProductController extends Controller
     }
 
     // Display the user's products on the dashboard
-    public function index()
+    public function seller()
     {
         $user = Auth::user();
         $products = Product::where('user_id', $user->id)->get();
 
         return view('dashboard', compact('products'));
+    }
+
+    // Display the user's products on the dashboard
+    public function buyer()
+    {
+        $user = Auth::user();
+        $products = Product::all();
+
+        return view('alldashboard', compact('products'));
     }
 
     // Show the product details
