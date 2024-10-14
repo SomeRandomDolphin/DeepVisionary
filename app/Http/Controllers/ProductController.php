@@ -103,21 +103,58 @@ class ProductController extends Controller
     }
 
     // Display the user's products on the dashboard
-    public function seller()
+    public function seller(Request $request)
     {
         $user = Auth::user();
-        $products = Product::where('user_id', $user->id)->get();
+        $query = Product::where('user_id', $user->id);
 
-        return view('dashboard', compact('products'));
+        // Apply search filter
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Apply category filter
+        if ($request->has('category') && $request->input('category') != 'all') {
+            $query->where('category', $request->input('category'));
+        }
+
+        $products = $query->get();
+
+        // Get unique categories for the filter dropdown
+        $categories = Product::where('user_id', $user->id)->distinct('category')->pluck('category');
+
+        return view('dashboard', compact('products', 'categories'));
     }
 
     // Display the user's products on the dashboard
-    public function buyer()
+    public function buyer(Request $request)
     {
-        $user = Auth::user();
-        $products = Product::all();
+        $query = Product::query();
 
-        return view('alldashboard', compact('products'));
+        // Apply search filter
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Apply category filter
+        if ($request->has('category') && $request->input('category') != 'all') {
+            $query->where('category', $request->input('category'));
+        }
+
+        $products = $query->get();
+
+        // Get unique categories for the filter dropdown
+        $categories = Product::distinct('category')->pluck('category');
+
+        return view('alldashboard', compact('products', 'categories'));
     }
 
     // Show the product details

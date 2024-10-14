@@ -68,7 +68,7 @@
         }
     </style>
 
-    <div class="py-12">
+<div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <main role="main">
@@ -79,23 +79,18 @@
                                 <a href="{{ route('product.create') }}" class="btn btn-primary my-2">Upload New Product</a>
                             </p>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <form class="form-inline">
-                                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                                        <button class="btn btn-outline-success" type="submit">Search</button>
-                                    </form>
-                                </div>
-
-                                <div class="col-md-6 text-right">
-                                    <form class="form-inline justify-content-end">
-                                        <label class="mr-2">Filter by:</label>
-                                        <select class="form-control mr-2">
-                                            <option value="all">All</option>
-                                            <option value="category1">Category 1</option>
-                                            <option value="category2">Category 2</option>
-                                            <option value="category3">Category 3</option>
+                                <div class="col-md-12">
+                                    <form class="form-inline justify-content-center" action="{{ route('alldashboard') }}" method="GET">
+                                        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search" value="{{ request('search') }}">
+                                        <select class="form-control mr-sm-2" name="category">
+                                            <option value="all">All Categories</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
+                                                    {{ $category }}
+                                                </option>
+                                            @endforeach
                                         </select>
-                                        <button class="btn btn-outline-info" type="submit">Apply Filter</button>
+                                        <button class="btn btn-outline-success" type="submit">Search</button>
                                     </form>
                                 </div>
                             </div>
