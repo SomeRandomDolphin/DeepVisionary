@@ -13,8 +13,10 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('title');
+            $table->string('category');
             $table->text('description');
             $table->decimal('price', 10, 2);
+            $table->integer('stock');
             $table->string('image_path');
             $table->timestamps();
 

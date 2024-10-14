@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Google\Cloud\Vision\V1\ImageAnnotatorClient;
+use Google\Cloud\Vision\V1\Image;
+use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller
 {
@@ -34,8 +37,56 @@ class ProductController extends Controller
         $user = Auth::user();
         $imageName = time().'.'.$request->image->extension();
 
-        // Store image on your storage disk
+        // Store image on Supabase
         $path = $request->file('image')->storeAs('uploads/'.$user->id, $imageName, 'supabase');
+
+        // Get the URL of the uploaded image
+        $baseUrl = 'https://qpbjgvsfqfnqbrctahst.supabase.co/storage/v1/object/public/user_gallery/';
+        $fullPath = Storage::disk('supabase')->path($path);
+        $imageUrl = $baseUrl . $fullPath;
+
+        $category = 'Uncategorized';  // Default category
+
+        try {
+            // Resolve the path to the credentials file
+            $credentialsPath = base_path(env('GOOGLE_APPLICATION_CREDENTIALS'));
+            
+            \Log::info('Attempting to use credentials file: ' . $credentialsPath);
+
+            if (!file_exists($credentialsPath)) {
+                throw new \Exception("Credentials file not found at: " . $credentialsPath);
+            }
+
+            // Initialize the Vision client with the service account key file
+            $vision = new ImageAnnotatorClient([
+                'credentials' => $credentialsPath
+            ]);
+
+            // Download the image content
+            $response = Http::get($imageUrl);
+            if ($response->failed()) {
+                throw new \Exception("Failed to download image from Supabase");
+            }
+            $imageContent = $response->body();
+
+            // Perform label detection
+            $image = (new Image())->setContent($imageContent);
+            $response = $vision->labelDetection($image);
+            $labels = $response->getLabelAnnotations();
+
+            if (!empty($labels)) {
+                // Get the most likely category (first label)
+                $category = $labels[0]->getDescription();
+            }
+
+            // Close the Vision client
+            $vision->close();
+        } catch (\Exception $e) {
+            // Log the error
+            \Log::error('Google Vision API Error: ' . $e->getMessage());
+            // You might want to flash a message to the user here
+            session()->flash('error', 'Unable to categorize image. Using default category.');
+        }
 
         // Save product information to the database
         $product = new Product();
@@ -45,6 +96,7 @@ class ProductController extends Controller
         $product->price       = $request->price;
         $product->stock       = $request->stock;
         $product->image_path  = $path;
+        $product->category    = $category;
         $product->save();
 
         return redirect()->route('dashboard')->with('productUploaded', true);
